@@ -121,3 +121,22 @@ build_example(
     ${libpoint-to-point}
     ${libapplications}
 )
+
+build_example(
+  NAME dsack-example
+  SOURCE_FILES dsack-example.cc
+  LIBRARIES_TO_LINK
+    ${libpoint-to-point}
+    ${libinternet}
+    ${libapplications}
+)
+
+build_example(
+  NAME rack-example
+  SOURCE_FILES rack-example.cc
+  LIBRARIES_TO_LINK
+    ${libpoint-to-point}
+    ${libinternet}
+    ${libapplications}
+)
+
