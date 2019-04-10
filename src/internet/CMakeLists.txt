@@ -115,6 +115,7 @@ set(source_files
     model/tcp-socket-factory.cc
     model/tcp-socket-state.cc
     model/tcp-socket.cc
+    model/tcp-tlp.cc
     model/tcp-tx-buffer.cc
     model/tcp-tx-item.cc
     model/tcp-vegas.cc
@@ -240,6 +241,7 @@ set(header_files
     model/tcp-socket-factory.h
     model/tcp-socket-state.h
     model/tcp-socket.h
+    model/tcp-tlp.h
     model/tcp-tx-buffer.h
     model/tcp-tx-item.h
     model/tcp-vegas.h
@@ -331,6 +333,7 @@ set(test_sources
     test/tcp-syn-connection-failed-test.cc
     test/tcp-test.cc
     test/tcp-timestamp-test.cc
+    test/tcp-tlp-test.cc
     test/tcp-tx-buffer-test.cc
     test/tcp-vegas-test.cc
     test/tcp-veno-test.cc

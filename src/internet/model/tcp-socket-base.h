@@ -39,6 +39,7 @@ class TcpRxBuffer;
 class TcpTxBuffer;
 class TcpOption;
 class TcpRack;
+class TcpTlp;
 class Ipv4Interface;
 class Ipv6Interface;
 class TcpRateOps;
@@ -863,9 +864,10 @@ class TcpSocketBase : public TcpSocket
      * Note that this function did not implement the PSH flag.
      *
      * @param withAck forces an ACK to be sent
+     * @param tlpRound transmit the lowest-sequence unsent Segment as TLP
      * @returns the number of packets sent
      */
-    uint32_t SendPendingData(bool withAck = false);
+    uint32_t SendPendingData(bool withAck = false, bool tlpRound = false);
 
     /**
      * @brief Extract at most maxSize bytes from the TxBuffer at sequence seq, add the
@@ -1186,7 +1188,11 @@ class TcpSocketBase : public TcpSocket
      * @brief An RTO event happened
      */
     virtual void ReTxTimeout();
-
+    
+    /**
+     * @brief An PTO event happened
+     */
+    virtual void PTOTimeout(void);
     /**
      * @brief Action upon delay ACK timeout, i.e. send an ACK
      */
@@ -1382,12 +1388,13 @@ class TcpSocketBase : public TcpSocket
 
   protected:
     // Counters and events
+
     EventId m_retxEvent{};     //!< Retransmission event
     EventId m_lastAckEvent{};  //!< Last ACK timeout event
     EventId m_delAckEvent{};   //!< Delayed ACK timeout event
     EventId m_persistEvent{};  //!< Persist event: Send 1 byte to probe for a non-zero Rx window
     EventId m_timewaitEvent{}; //!< TIME_WAIT expiration event: Move this socket to CLOSED state
-
+    EventId m_tlptimerEvent{}; //!< TLP timer >
     // ACK management
     uint32_t m_dupAckCount{0};    //!< Dupack counter
     uint32_t m_delAckCount{0};    //!< Delayed ACK counter
@@ -1456,9 +1463,11 @@ class TcpSocketBase : public TcpSocket
     uint8_t m_sndWindShift{0};      //!< Window shift to apply to incoming segments
     bool m_timestampEnabled{true};  //!< Timestamp option enabled
     uint32_t m_timestampToEcho{0};  //!< Timestamp to echo
-    bool m_dsackEnabled{false};     //!< D-SACK option disabled
-    bool m_fackEnabled{false};      //!< FACK option disabled
-    bool m_rackEnabled{false};      //!< RACK option enabled
+
+    bool m_fackEnabled{false};  //!< FACK option disabled
+    bool m_dsackEnabled{false}; //!< D-SACK option disabled
+    bool m_rackEnabled{false};  //!< RACK option enabled
+    bool m_tlpEnabled{false};   //!< TLP option enabled
 
     EventId m_sendPendingDataEvent{}; //!< micro-delay event to send pending data
 
@@ -1479,6 +1488,10 @@ class TcpSocketBase : public TcpSocket
     // RACK related variables
     Ptr<TcpRack> m_rack;
     Ptr<TcpRateOps> m_rateOps; //!< Rate operations
+
+    // TLP related variables
+    Ptr<TcpTlp> m_tlp;
+    bool m_tlpRound = false;
 
     // Guesses over the other connection end
     bool m_isFirstPartialAck{true}; //!< First partial ACK during RECOVERY
