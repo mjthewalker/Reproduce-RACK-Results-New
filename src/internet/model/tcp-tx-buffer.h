@@ -11,6 +11,7 @@
 #define TCP_TX_BUFFER_H
 
 #include "tcp-option-sack.h"
+#include "tcp-rack.h"
 #include "tcp-tx-item.h"
 
 #include "ns3/internet-export.h"
@@ -222,6 +223,14 @@ class TcpTxBuffer : public Object
     bool Add(Ptr<Packet> p);
 
     /**
+     * @brief Marks the expired packets as lost according to RACK
+     *
+     * @param rack is the pointer to the RACK objective
+     * @param timeout is the minimum timeout value for the packets to expire
+     */
+    void DetectRackLoss(Ptr<TcpRack> rack, double* timeout);
+
+    /**
      * @brief Returns the number of bytes from the buffer in the range [seq, tailSequence)
      *
      * @param seq initial sequence number
@@ -259,6 +268,23 @@ class TcpTxBuffer : public Object
      * @param seq The sequence number of the head byte
      */
     void SetHeadSequence(const SequenceNumber32& seq);
+
+    /**
+     * @brief Returns sequence number of the highest sacked packet
+     *
+     */
+    SequenceNumber32 GetHighestSacked()
+    {
+        return m_highestSack.second;
+    }
+
+    /**
+     * @brief Returns the information of the latest packet acked
+     *
+     * @param ack ACK number received
+     * @param item: Pointer to the TcpTxItem of the packet
+     */
+    void GetPacketInfo(SequenceNumber32 ack, TcpTxItem* item);
 
     /**
      * @brief Checks whether the ack corresponds to retransmitted data

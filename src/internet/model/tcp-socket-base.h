@@ -38,6 +38,7 @@ class RttEstimator;
 class TcpRxBuffer;
 class TcpTxBuffer;
 class TcpOption;
+class TcpRack;
 class Ipv4Interface;
 class Ipv6Interface;
 class TcpRateOps;
@@ -666,11 +667,19 @@ class TcpSocketBase : public TcpSocket
                                            const Address& localAddr,
                                            const Address& peerAddr,
                                            const Ptr<const TcpSocketBase> socket);
-  
+
     // Variables for FACK
     uint32_t m_sndFack;    //!< Sequence number of the forward most acknowledgement
     uint32_t m_retranData; //!< Number of outstanding retransmitted bytes
 
+    // D-SACK related variables
+    bool m_isDsack{false};   //!< Boolean variable to check if a duplicate packet has arrived
+    bool m_dsackSeen{false}; //!< Check if DS-ACK is received
+    SequenceNumber32 m_dsackFirst{0};  //!< First Sequence number of D-SACK block
+    SequenceNumber32 m_dsackSecond{0}; //!< Second Sequence number of D-SACK block
+
+    // Variable to check if packets are reordered
+    bool m_reorder{false};
 
     // D-SACK related variables
     bool m_isDsack{false}; //!< Boolean variable to check if a duplicate packet has arrived
@@ -1162,6 +1171,11 @@ class TcpSocketBase : public TcpSocket
     void EnterCwr(uint32_t currentDelivered);
 
     /**
+     * @brief RACK Loss Detection
+     */
+    void RackLoss();
+
+    /**
      * @brief Enter the CA_RECOVERY, and retransmit the head
      *
      * @param currentDelivered Currently (S)ACKed bytes
@@ -1281,6 +1295,13 @@ class TcpSocketBase : public TcpSocket
      * @param header TcpHeader where the method should add the option
      */
     void AddOptionSack(TcpHeader& header);
+
+    /**
+     * @brief Add the DSACK block to the header
+     *
+     * @param header TcpHeader where the method should add the option
+     */
+    void AddDsack(TcpHeader& header);
 
     /**
      * @brief Add the D-SACK block to the header
@@ -1435,9 +1456,9 @@ class TcpSocketBase : public TcpSocket
     uint8_t m_sndWindShift{0};      //!< Window shift to apply to incoming segments
     bool m_timestampEnabled{true};  //!< Timestamp option enabled
     uint32_t m_timestampToEcho{0};  //!< Timestamp to echo
-    
-    bool m_fackEnabled{false};      //!< FACK option disabled
     bool m_dsackEnabled{false};     //!< D-SACK option disabled
+    bool m_fackEnabled{false};      //!< FACK option disabled
+    bool m_rackEnabled{false};      //!< RACK option enabled
 
     EventId m_sendPendingDataEvent{}; //!< micro-delay event to send pending data
 
@@ -1454,7 +1475,10 @@ class TcpSocketBase : public TcpSocket
     Ptr<TcpSocketState> m_tcb;                 //!< Congestion control information
     Ptr<TcpCongestionOps> m_congestionControl; //!< Congestion control
     Ptr<TcpRecoveryOps> m_recoveryOps;         //!< Recovery Algorithm
-    Ptr<TcpRateOps> m_rateOps;                 //!< Rate operations
+
+    // RACK related variables
+    Ptr<TcpRack> m_rack;
+    Ptr<TcpRateOps> m_rateOps; //!< Rate operations
 
     // Guesses over the other connection end
     bool m_isFirstPartialAck{true}; //!< First partial ACK during RECOVERY

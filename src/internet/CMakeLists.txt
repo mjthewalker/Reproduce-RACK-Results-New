@@ -105,6 +105,7 @@ set(source_files
     model/tcp-option-winscale.cc
     model/tcp-option.cc
     model/tcp-prr-recovery.cc
+    model/tcp-rack.cc
     model/tcp-rate-ops.cc
     model/tcp-recovery-ops.cc
     model/tcp-rx-buffer.cc
@@ -230,6 +231,7 @@ set(header_files
     model/tcp-option-winscale.h
     model/tcp-option.h
     model/tcp-prr-recovery.h
+    model/tcp-rack.h
     model/tcp-rate-ops.h
     model/tcp-recovery-ops.h
     model/tcp-rx-buffer.h
@@ -318,6 +320,7 @@ set(test_sources
     test/tcp-pacing-test.cc
     test/tcp-pkts-acked-test.cc
     test/tcp-prr-recovery-test.cc
+    test/tcp-rack-test.cc
     test/tcp-rate-ops-test.cc
     test/tcp-rto-test.cc
     test/tcp-rtt-estimation.cc
