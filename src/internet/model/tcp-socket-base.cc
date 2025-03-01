@@ -4451,6 +4451,7 @@ TcpSocketBase::ProcessOptionSack(const Ptr<const TcpOption> option)
     NS_LOG_FUNCTION(this << option);
 
     Ptr<const TcpOptionSack> s = DynamicCast<const TcpOptionSack>(option);
+    TcpOptionSack::SackList list = s->GetSackList();
 
      // Update m_sndFack with the highest sequence number acknowledged from the SACK blocks
     if (m_fackEnabled)

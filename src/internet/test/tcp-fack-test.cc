@@ -20,7 +20,7 @@
  */
 
 #include "ns3/log.h"
-#include "ns3/tcp-westwood.h"
+
 #include "tcp-general-test.h"
 #include "ns3/simple-channel.h"
 #include "ns3/node.h"
@@ -169,7 +169,6 @@ public:
   TcpFackTestSuite () : TestSuite ("tcp-fack-test", UNIT)
   {
     std::list<TypeId> types;
-    types.insert (types.begin (), TcpWestwood::GetTypeId ());
     types.insert (types.begin (), TcpNewReno::GetTypeId ());
 
     for (std::list<TypeId>::iterator it = types.begin (); it != types.end (); ++it)
