@@ -114,6 +114,15 @@ build_example(
 )
 
 build_example(
+  NAME dsack-example
+  SOURCE_FILES dsack-example.cc
+  LIBRARIES_TO_LINK
+    ${libpoint-to-point}
+    ${libinternet}
+    ${libapplications}
+)
+
+build_example(
   NAME fack_example
   SOURCE_FILES fack_example.cc
   LIBRARIES_TO_LINK
