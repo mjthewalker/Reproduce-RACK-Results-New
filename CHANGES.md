@@ -16,6 +16,28 @@ This file is a best-effort approach to solving this issue; we will do our best b
 
 ### New API
 
+* (network) Added a function to detect IPv4 APIPA addresses (169.254.0.0/16).
+* (wifi) Added a new `AssocType` attribute to `StaWifiMac` to configure the type of association performed by a device, provided that it is supported by the standard configured for the device. By using this attribute, it is possible for an EHT single-link device to perform ML setup with an AP MLD and for an EHT multi-link device to perform legacy association with an AP MLD.
+* Added **TCP D-SACK** option (RFC 2883). Can be configured through the Attribute `TcpSocketBase::DSack` (default: true)
+
+### Changes to existing API
+
+* (core) ``Object::GetInstanceTypeId()`` can no longer be specialized by subclasses and any such subclass API should be deleted (the base class will handle it).
+* (internet-apps) Added a parameter to the RADVD helper to announce a prefix without the autoconfiguration flag.
+* (flow-monitor) Reformatted documentation and added a new concept figure.
+
+### Changes to build system
+
+### Changed behavior
+
+* (docs) Models documentation format guidelines have been updated.
+* (zigbee) Adjust pedantic link cost requirement in ``NeighborTable::LookUpForBestParent``, a minimum link cost of 3 is not required now.
+
+## Changes from ns-3.43 to ns-3.44
+
+### New API
+
+* (antenna) Add `SymmetricAdjacencyMatrix` utility class, used to track the necessity of channel update between every `PhasedArrayModel` pair.
 * (applications) Added two new base classes for source and sink applications, `SourceApplication` and `SinkApplication`, respectively.
 * (wifi) Changes have been made to the `WifiRemoteStationManager` interface for what concerns the update of the frame retry count of the MPDUs and the decision of dropping MPDUs (possibly based on the max retry limit). The `NeedRetransmission` method has been replaced by the `GetMpdusToDropOnTxFailure` method and the `DoNeedRetransmission` method has been replaced by the `DoGetMpdusToDropOnTxFailure` method. Also, the `DoIncrementRetryCountOnTxFailure` method has been added to implement custom policies for the update of the frame retry count of MPDUs upon transmission failure.
 * (applications) Added an `OnOffState` trace source to `OnOffApplication`, to track whether the application is transmitting or not.
