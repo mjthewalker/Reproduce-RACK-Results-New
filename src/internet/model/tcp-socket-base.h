@@ -682,11 +682,6 @@ class TcpSocketBase : public TcpSocket
     // Variable to check if packets are reordered
     bool m_reorder{false};
 
-    // D-SACK related variables
-    bool m_isDsack{false}; //!< Boolean variable to check if a duplicate packet has arrived
-    SequenceNumber32 m_dsackFirst{0};  //!< First Sequence number of D-SACK block
-    SequenceNumber32 m_dsackSecond{0}; //!< Second Sequence number of D-SACK block
-
   protected:
     // Implementing ns3::TcpSocket -- Attribute get/set
     // inherited, no need to doc
@@ -1304,13 +1299,6 @@ class TcpSocketBase : public TcpSocket
 
     /**
      * @brief Add the DSACK block to the header
-     *
-     * @param header TcpHeader where the method should add the option
-     */
-    void AddDsack(TcpHeader& header);
-
-    /**
-     * @brief Add the D-SACK block to the header
      *
      * @param header TcpHeader where the method should add the option
      */

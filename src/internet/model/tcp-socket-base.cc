@@ -145,16 +145,6 @@ TcpSocketBase::GetTypeId()
                           BooleanValue(false),
                           MakeBooleanAccessor(&TcpSocketBase::m_fackEnabled),
                           MakeBooleanChecker())
-            .AddAttribute("DSack",
-                          "Enable or disable D-SACK option",
-                          BooleanValue(true),
-                          MakeBooleanAccessor(&TcpSocketBase::m_dsackEnabled),
-                          MakeBooleanChecker())
-            .AddAttribute("Fack",
-                          "Enable or disable Fack option",
-                          BooleanValue(false),
-                          MakeBooleanAccessor(&TcpSocketBase::m_fackEnabled),
-                          MakeBooleanChecker())
             .AddAttribute("Dsack",
                           "Enable or disable DSACK option",
                           BooleanValue(false),
@@ -3557,7 +3547,7 @@ TcpSocketBase::PTOTimeout(void)
         {
             lastPacketSent = m_txBuffer->GetLastPacket();
             npacketSent = SendDataPacket(lastPacketSent, m_tcb->m_segmentSize, m_connected);
-            isTlpProbe = true;
+            m_tlpRound = true;
             // Rearm the RTO timer in order to avoid sending back-to-back probe
             if (m_retxEvent.IsPending())
             {
@@ -3569,7 +3559,7 @@ TcpSocketBase::PTOTimeout(void)
 
     if (npacketSent > 0)
     {
-        isTlpProbe = true;
+        m_tlpRound = true;
     }
     // Rearm the RTO timer in order to avoid sending back-to-back probe
     if (m_retxEvent.IsPending())
