@@ -63,8 +63,8 @@ main(int argc, char* argv[])
     uint32_t stream = 1;
     uint32_t dataSize = 524;
     uint32_t delAckCount = 1;
-    bool dsack = true;
-    bool rack = true;
+    bool dsack = false;
+    bool rack = false;
     bool reorder = false;
     bool dupack = true;
 
