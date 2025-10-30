@@ -78,7 +78,7 @@ main(int argc, char* argv[])
     strftime(buffer, sizeof(buffer), "%d-%m-%Y-%I-%M-%S", timeinfo);
     std::string currentTime(buffer);
 
-    dir += (currentTime + "/");
+    // dir += (currentTime + "/");
     std::string dirToSave = "mkdir -p " + dir;
     system(dirToSave.c_str());
     system((dirToSave + "/pcap/").c_str());
