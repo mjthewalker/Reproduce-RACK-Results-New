@@ -2,6 +2,12 @@
 
 This repository has the upgraded implementation of RACK in ns-3 (https://github.com/ShikhaBakshi/Reproduce-RACK-Results).
 
+
+**Shell script 1 results:**
+ https://docs.google.com/document/d/158seMK0XXK6fKLHjGmx-0miecEdDX-HVDYREQtGcR5A/edit?tab=t.1o52opptokc2
+
+**Shell script 2 results:**  https://docs.google.com/document/d/1FhIqnnUz1wpJgJyjgEAhN_VrxbB_CPFXSnDlIpMla58/edit?tab=t.4pjd7ohicud
+
 ## Steps to reproduce results:
 
 1. Clone this repo:
@@ -39,3 +45,8 @@ and overlap them.
 ```
 ./test.py --suite="tcp-rack-test"
 ```
+
+
+
+
+
