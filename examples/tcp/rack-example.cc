@@ -67,7 +67,7 @@ main(int argc, char* argv[])
     bool rack = false;
     bool reorder = false;
     bool dupack = true;
-
+    std::string tcpTypeId = "ns3::TcpLinuxReno";
     time_t rawtime;
     struct tm* timeinfo;
     char buffer[80];
@@ -157,7 +157,7 @@ main(int argc, char* argv[])
         routerToRightIPAddress.push_back(ipAddresses.Assign(routerToRight[i]));
         ipAddresses.NewNetwork();
     }
-
+    Config::SetDefault("ns3::TcpL4Protocol::SocketType",StringValue("ns3::TcpLinuxReno"));
     Config::SetDefault("ns3::TcpSocket::SndBufSize", UintegerValue(1 << 20));
     Config::SetDefault("ns3::TcpSocket::RcvBufSize", UintegerValue(1 << 20));
     Config::SetDefault("ns3::TcpSocket::InitialCwnd", UintegerValue(10));
@@ -168,7 +168,6 @@ main(int argc, char* argv[])
     Config::SetDefault("ns3::TcpSocketBase::Sack", BooleanValue(true));
     Config::SetDefault("ns3::FifoQueueDisc::MaxSize", QueueSizeValue(QueueSize("50p")));
     Config::SetDefault("ns3::TcpSocketBase::WindowScaling", BooleanValue(true));
-
     if (!dupack)
     {
         Config::SetDefault("ns3::TcpSocketBase::ReTxThreshold", UintegerValue(25));
