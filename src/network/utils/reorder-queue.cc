@@ -30,12 +30,12 @@ ReorderQueue<Item>::GetTypeId()
                                           MakeQueueSizeChecker())
                             .AddAttribute("ReorderDepth",
                                           "The number of packets that will bypass a held packet",
-                                          UintegerValue(5),
+                                          UintegerValue(3),
                                           MakeUintegerAccessor(&ReorderQueue::m_reorderDepth),
                                           MakeUintegerChecker<uint32_t>())
                             .AddAttribute("InSequenceLength",
                                           "The number of packets until a reordering event",
-                                          UintegerValue(3),
+                                          UintegerValue(10),
                                           MakeUintegerAccessor(&ReorderQueue::m_inSequenceLength),
                                           MakeUintegerChecker<uint32_t>());
     return tid;

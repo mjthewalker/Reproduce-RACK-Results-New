@@ -99,6 +99,7 @@ main(int argc, char* argv[])
     uv->SetStream(stream);
 
     // Create nodes
+    Config::SetDefault("ns3::TcpL4Protocol::SocketType",StringValue("ns3::TcpLinuxReno"));
     NodeContainer senders, routers, receivers;
     routers.Create(2);
     senders.Create(1);
@@ -157,7 +158,6 @@ main(int argc, char* argv[])
         routerToRightIPAddress.push_back(ipAddresses.Assign(routerToRight[i]));
         ipAddresses.NewNetwork();
     }
-    Config::SetDefault("ns3::TcpL4Protocol::SocketType",StringValue("ns3::TcpLinuxReno"));
     Config::SetDefault("ns3::TcpSocket::SndBufSize", UintegerValue(1 << 20));
     Config::SetDefault("ns3::TcpSocket::RcvBufSize", UintegerValue(1 << 20));
     Config::SetDefault("ns3::TcpSocket::InitialCwnd", UintegerValue(10));
