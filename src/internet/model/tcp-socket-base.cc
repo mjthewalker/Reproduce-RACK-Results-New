@@ -144,16 +144,6 @@ TcpSocketBase::GetTypeId()
                           BooleanValue(false),
                           MakeBooleanAccessor(&TcpSocketBase::m_fackEnabled),
                           MakeBooleanChecker())
-            .AddAttribute("DSack",
-                          "Enable or disable D-SACK option",
-                          BooleanValue(true),
-                          MakeBooleanAccessor(&TcpSocketBase::m_dsackEnabled),
-                          MakeBooleanChecker())
-            .AddAttribute("Fack",
-                          "Enable or disable Fack option",
-                          BooleanValue(false),
-                          MakeBooleanAccessor(&TcpSocketBase::m_fackEnabled),
-                          MakeBooleanChecker())
             .AddAttribute("Dsack",
                           "Enable or disable DSACK option",
                           BooleanValue(false),
